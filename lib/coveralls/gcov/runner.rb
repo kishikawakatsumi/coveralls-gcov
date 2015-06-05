@@ -111,6 +111,18 @@ module Coveralls
           end
         end
 
+        remotes = %x[git remote -v].rstrip.split(/\r?\n/).map {|line| line.chomp }.select { |line| line.include? 'fetch'}.first.split(' ')
+        report['git'] = {
+          'head': {
+            'id': %x[git --no-pager log -1 --pretty=format:%H],
+            'author_name': %x[git --no-pager log -1 --pretty=format:%aN],
+            'author_email': %x[git --no-pager log -1 --pretty=format:%ae],
+            'committer_name': %x[git --no-pager log -1 --pretty=format:%cN],
+            'committer_email': %x[git --no-pager log -1 --pretty=format:%ce],
+            'message': %x[git --no-pager log -1 --pretty=format:%s] },
+          'branch': %x[git rev-parse --abbrev-ref HEAD].strip,
+          'remotes': {'name': remotes[0], 'remote': remotes[1]} }
+
         report
       end
 
