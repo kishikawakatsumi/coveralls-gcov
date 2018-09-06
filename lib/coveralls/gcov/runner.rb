@@ -3,6 +3,7 @@ require 'pathname'
 require 'tempfile'
 require 'open3'
 require 'digest/md5'
+require 'securerandom'
 
 module Coveralls
   module Gcov
