@@ -82,6 +82,7 @@ module Coveralls
               if number.to_i == 0
                 key, val = /([^:]+):(.*)$/.match(text).to_a[1..2]
                 if key == 'Source'
+                  val = "#{`pwd`.chomp}/#{val}" unless val.start_with?("/")
                   name = Pathname(val).relative_path_from(Pathname(base_dir)).to_s
                   if File.exist?(val)
                     source_digest = Digest::MD5.file(val).to_s
